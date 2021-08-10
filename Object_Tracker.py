@@ -101,24 +101,19 @@ while True:
             dis = findDis(pts1, centroid)
             disList.append(dis)
             if i > 0:
-                if disList[i] > disList[i - 1]:  # checks if new distance is bigger than previous
+                if disList[i] < disList[i - 1]:  # checks if new distance is bigger than previous
                     ID = i
             i = i + 1
 
         # Continously displays cup which ball is under until a ball appears
         while len(ball) == 0:
-            count = 0
             for (objectID, centroid) in objects.items():
-                if count == ID:  # Gets centroid of cup ball is under
-                    centroidBall = centroid
-                else:
-                    count = count + 1
-
-            text = "UNDER THIS CUP!"
-            cv2.putText(imgCircle, text, (centroidBall[0] - 10, centroidBall[1] - 10),
+                if ID == objectID:  # Gets centroid of cup ball is under
+                    text = "UNDER THIS CUP!"
+                    cv2.putText(imgCircle, text, (centroidBall[0] - 10, centroidBall[1] - 10),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 2)
-            cv2.circle(imgCircle, (centroidBall[0], centroidBall[1]), 4, (255, 255, 0), -1)
-            cv2.imshow('Circles', imgCircle)
+                    cv2.circle(imgCircle, (centroidBall[0], centroidBall[1]), 4, (255, 255, 0), -1)
+                    cv2.imshow('Circles', imgCircle)
 
             frames = pipeline.wait_for_frames()
             color_frame = frames.get_color_frame()
